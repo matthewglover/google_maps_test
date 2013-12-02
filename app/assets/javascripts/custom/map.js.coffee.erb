@@ -1,0 +1,66 @@
+class GoogleMaps.Custom.Map
+  _.extend @prototype, Backbone.Events
+
+  zoom: 15
+
+  constructor: (latitude, longitude)->
+    @_buildMap(latitude, longitude)
+    @_setHomeMarker(latitude, longitude)
+
+  setView: (latitude, longitude, options={})->
+    # @base.setView([latitude, longitude], @zoom)
+    # @_setHomeMarker(latitude, longitude) if options.home_marker?
+
+  addMarker: (latitude, longitude, options={})->
+    marker_options = _.defaults(options,
+      position: new google.maps.LatLng(latitude, longitude)
+      map: @map
+    )
+    marker = new google.maps.Marker(marker_options)
+    marker
+
+  removeMarker: (marker)->
+    # @base.removeLayer(marker)
+
+  bindPopup: (marker, content)->
+    # marker.bindPopup(content)
+
+  _buildMap: (latitude, longitude)->
+    @map = new google.maps.Map(document.getElementById('map-canvas'),
+      center: new google.maps.LatLng(latitude, longitude)
+      zoom: 15
+    )
+
+  _setHomeMarker: (latitude, longitude)->
+    home_marker = @addMarker(latitude, longitude,
+      draggable:true,
+      animation: google.maps.Animation.DROP
+    )
+
+    infowindow = new google.maps.InfoWindow(content: "You are here")
+
+    google.maps.event.addListener(home_marker, 'click', ->
+      infowindow.open(@map, home_marker)
+    )
+
+    google.maps.event.addListener(home_marker, 'dragend', ->
+      pos = home_marker.getPosition()
+      console.log "#{pos.lat()} - #{pos.lng()}"
+    )
+
+  _baseIcon: ->
+    # return @_base_icon if @_base_icon?
+    # @_base_icon = L.icon(
+    #   iconUrl: "<%= asset_path('marker-icon.png') %>"
+    #   retinaUrl: "<%= asset_path('marker-icon-2x.png') %>"
+    #   shadowUrl: "<%= asset_path('marker-shadow.png') %>"
+    #   iconSize: [25, 41]
+    #   iconAnchor: [12, 41]
+    #   popupAnchor: [1, -34]
+    #   shadowSize: [41, 41])
+
+  _onHomeDrag: (event)=>
+    # console.log  "#{key} - #{value}" for key, value of event.target
+    # marker = event.target
+    # lat_lng = [marker.getLatLng().lat, marker.getLatLng().lng]
+    # BackboneLeaflet.Events.trigger("homeDragged", marker.getLatLng().lat, marker.getLatLng().lng)
