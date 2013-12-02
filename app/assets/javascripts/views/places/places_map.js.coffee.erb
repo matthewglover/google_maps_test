@@ -1,0 +1,32 @@
+class GoogleMaps.Views.PlacesMap extends Backbone.View
+
+  initialize: ->
+    @listenTo(@collection, 'sync', @_addViews)
+    @listenTo(@collection, 'setLocation', @_setMapView)
+
+  _addViews: =>
+    @collection.each(@_addView)
+
+  _addView: (model)=>
+    unless _.findWhere(@_views(), model: model)
+      view = new GoogleMaps.Views.MapPlace(model: model, map: @map)
+      @_views().push(view)
+
+  _setMapView: (lat, lng)->
+    @_killViews()
+    if @map?
+      @map.setView(lat, lng)
+    else
+      @map = new GoogleMaps.Custom.Map(lat, lng)
+
+  _killViews: ->
+    @_killView _.first(@_views()) while @_views().length > 0
+
+  _killView: (view)->
+    view.remove() if view?
+    @_views(_.without @_views(), view)
+
+  _views: (ary=false)->
+    if ary then @__view_array = ary else @__view_array ?= []
+
+

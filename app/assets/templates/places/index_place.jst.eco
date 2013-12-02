@@ -1,0 +1,7 @@
+Name: <%= @place.get('name') %>
+
+<% if @place.get('show') == true: %>
+  <button class="showHide">hide</button>
+<% else: %>
+  <button class="showHide">show</button>
+<% end %>

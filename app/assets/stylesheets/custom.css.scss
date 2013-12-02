@@ -3,16 +3,25 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 html {
-  height: 100%
+  height: 100%;
+  width: 100%;
 }
 
 body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0
 }
 
 #map-canvas {
+  float: left;
   height: 100%;
   width: 50%;
+}
+
+#list {
+  float: left;
+  width: 400px;
+  border: 1px solid green;
 }
