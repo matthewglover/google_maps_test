@@ -1,16 +1,16 @@
 class FactualController < ApplicationController
   def search
-    latitude = params['latitude']
-    longitude = params['longitude']
+    lat = params['lat']
+    lng = params['lng']
     page = params['page'] || 1
-    diameter = 750
+    radius = params['radius'] || 500
     @factual = FactualApi.new
     @factual.search(
       search: 'restaurant',
-      latitude: latitude,
-      longitude: longitude,
+      lat: lat,
+      lng: lng,
       page: page,
-      diameter: diameter
+      radius: radius
     )
 
     respond_to do |format|

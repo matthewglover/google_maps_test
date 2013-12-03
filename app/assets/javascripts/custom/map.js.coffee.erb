@@ -8,10 +8,10 @@ class GoogleMaps.Custom.Map
     @_buildMap(lat, lng)
     @_setHomeMarker(lat, lng)
 
-  setView: (latitude, longitude)->
-    @map.panTo new google.maps.LatLng(latitude, longitude)
+  setView: (lat, lng)->
+    @map.panTo new google.maps.LatLng(lat, lng)
     @map.setZoom @zoom
-    @_setHomeMarker(latitude, longitude)
+    @_setHomeMarker(lat, lng)
 
   createMarker: (latitude, longitude, options={})->
     marker_options = _.defaults(options,
@@ -22,7 +22,6 @@ class GoogleMaps.Custom.Map
 
   showMarker: (marker)->
     marker.setMap(@map)
-    @_mapBounds().extend(marker.getPosition())
 
   removeMarker: (marker)->
     marker.setMap(null)
@@ -37,8 +36,8 @@ class GoogleMaps.Custom.Map
   _buildMap: (latitude, longitude)->
     @map = new google.maps.Map(document.getElementById('map-canvas'),
       center: new google.maps.LatLng(latitude, longitude)
-      zoom: 15
     )
+    @map.setZoom(@zoom)
 
   _setHomeMarker: (latitude, longitude)->
     @removeMarker(@home_marker) if @home_marker?
@@ -46,6 +45,7 @@ class GoogleMaps.Custom.Map
     @showMarker(home_marker)
     @_setHomeMarkerListeners(home_marker)
     @home_marker = home_marker
+    @_points([])
 
   _setHomeMarkerListeners: (home_marker)->
     that = this
@@ -63,5 +63,43 @@ class GoogleMaps.Custom.Map
     img_path = "assets/map_icons/number_#{number}.png"
     { url: img_path }
 
-  _mapBounds: ()->
-    @__mapBounds ?= new google.maps.LatLngBounds
+  _points: (latLng=false)->
+     if latLng then @__points = latLng else @__points ?= []
+
+  addPoint: (lat, lng)->
+    latLng = new google.maps.LatLng(lat, lng)
+    @_points().push(latLng)
+
+  zoomToFitMarkers: ->
+    markerBounds = new google.maps.LatLngBounds
+    if @_points().length > 0 then markerBounds.extend(latLng) for latLng in @_points()
+
+    @map.fitBounds(markerBounds)
+
+    radius = @_calcFurthestFromHome()
+    homeLatLng = @home_marker.getPosition()
+    @_drawCircle(homeLatLng, radius)
+
+  _calcFurthestFromHome: ->
+    homeLatLng = @home_marker.getPosition()
+    furthest_distance = 0
+    for point in @_points()
+      distance = @_calcDistanceBetween(homeLatLng, point)
+      furthest_distance = distance unless furthest_distance > distance
+    furthest_distance
+
+  _calcDistanceBetween: (latLngA, latLngB)->
+    google.maps.geometry.spherical.computeDistanceBetween(latLngA, latLngB)
+
+  _drawCircle: (latLng, radius) ->
+    options =
+      strokeColor: '#0000FF'
+      strokeOpacity: 0.8
+      strokeWeight: 2
+      fillColor: '#0000FF'
+      fillOpacity: 0.35
+      map: @map
+      center: latLng
+      radius: radius
+    @_circle.setMap(null) if @_circle?
+    @_circle = new google.maps.Circle(options);

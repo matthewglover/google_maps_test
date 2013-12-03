@@ -9,11 +9,11 @@ class GoogleMaps.Collections.Places extends Backbone.Collection
     @listenTo(@vent, 'Geocoder:geocode:setLocation', @setLocation)
     @listenTo(@, 'add', @_afterModelAdded)
 
-  setLocation: (latitude, longitude)->
-    @latitude = latitude
-    @longitude = longitude
+  setLocation: (lat, lng)->
+    @lat = lat
+    @lng = lng
     @page = 1
-    @trigger('setLocation', @latitude, @longitude)
+    @trigger('setLocation', @lat, @lng)
     @reset()
     @_fetchData()
 
@@ -27,9 +27,10 @@ class GoogleMaps.Collections.Places extends Backbone.Collection
       success: @_onFetched
       error: @_onError
       data:
-        latitude: @latitude
-        longitude: @longitude
+        lat: @lat
+        lng: @lng
         page: @page
+        radius: 300
       )
 
   _onFetched: (collection, response, options)->

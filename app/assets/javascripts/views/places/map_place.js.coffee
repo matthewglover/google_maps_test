@@ -3,6 +3,7 @@ class GoogleMaps.Views.MapPlace extends Backbone.View
   initialize: (options)->
     @list_pos = options.list_pos
     @map = options.map
+    @map.addPoint(@model.get('latitude'), @model.get('longitude'))
     @listenTo(@model, 'toggle_show', @toggleShow)
 
   toggleShow: =>

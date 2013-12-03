@@ -7,6 +7,7 @@ class GoogleMaps.Views.PlacesMap extends Backbone.View
 
   _addViews: =>
     @collection.each(@_addView)
+    @map.zoomToFitMarkers()
 
   _addView: (model)=>
     unless _.findWhere(@_views(), model: model)

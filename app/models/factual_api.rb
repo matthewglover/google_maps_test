@@ -9,17 +9,17 @@ class FactualApi
 
   def search(options)
     search = options[:search]
-    latitude = options[:latitude]
-    longitude = options[:longitude]
-    diameter = options[:diameter] || 50
-    page = options[:page] || 1
+    lat = options[:lat]
+    lng = options[:lng]
+    radius = options[:radius]
+    page = options[:page]
 
     query = factual.table('places')
     query  = query.filters('country' => 'GB')
-    query  = query.geo("$circle" => {"$center" => [latitude, longitude], "$meters" => diameter})
+    query  = query.geo("$circle" => {"$center" => [lat, lng], "$meters" => radius})
     query = query.search(search)
     query  = query.sort('$distance:asc,name:asc')
-    query = query.page(page, per: 5)
+    query = query.page(page, per: 10)
     @rows = query.rows
   end
 
