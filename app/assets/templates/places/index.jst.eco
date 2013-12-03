@@ -1,5 +1,3 @@
-<div id="Geocoder">
-</div>
 
 <!--<form id="new_location">
   <input type="text" name="latitude" id="new_latitude" value="52.289623" />
@@ -9,5 +7,5 @@
 <br />
 <button id="more">more</button>
 <button id="check_total">check</button>
-<ul id="PlaceList">
-</ul>
+<ol id="PlaceList">
+</ol>

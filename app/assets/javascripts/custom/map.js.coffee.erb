@@ -3,22 +3,26 @@ class GoogleMaps.Custom.Map
 
   zoom: 15
 
-  constructor: (latitude, longitude)->
-    @_buildMap(latitude, longitude)
-    @_setHomeMarker(latitude, longitude)
+  constructor: (lat, lng, options={})->
+    @vent = options.vent
+    @_buildMap(lat, lng)
+    @_setHomeMarker(lat, lng)
 
   setView: (latitude, longitude)->
     @map.panTo new google.maps.LatLng(latitude, longitude)
     @map.setZoom @zoom
     @_setHomeMarker(latitude, longitude)
 
-  addMarker: (latitude, longitude, options={})->
+  createMarker: (latitude, longitude, options={})->
     marker_options = _.defaults(options,
       position: new google.maps.LatLng(latitude, longitude)
-      map: @map
     )
     marker = new google.maps.Marker(marker_options)
     marker
+
+  showMarker: (marker)->
+    marker.setMap(@map)
+    @_mapBounds().extend(marker.getPosition())
 
   removeMarker: (marker)->
     marker.setMap(null)
@@ -38,19 +42,26 @@ class GoogleMaps.Custom.Map
 
   _setHomeMarker: (latitude, longitude)->
     @removeMarker(@home_marker) if @home_marker?
-    home_marker = @addMarker(latitude, longitude,
-      draggable:true,
-    )
+    home_marker = @createMarker(latitude, longitude, draggable: true)
+    @showMarker(home_marker)
+    @_setHomeMarkerListeners(home_marker)
+    @home_marker = home_marker
 
+  _setHomeMarkerListeners: (home_marker)->
+    that = this
+    map = @map
     infowindow = new google.maps.InfoWindow(content: "You are here")
-
     google.maps.event.addListener(home_marker, 'click', ->
-      infowindow.open(@map, home_marker)
+      infowindow.open(map, home_marker)
     )
-
     google.maps.event.addListener(home_marker, 'dragend', ->
       pos = home_marker.getPosition()
-      GoogleMaps.Vent.trigger 'Map:home_marker:dragend', pos.lat(), pos.lng()
+      that.vent.trigger 'Map:home_marker:dragend', pos.lat(), pos.lng()
     )
 
-    @home_marker = home_marker
+  _createNumericIcon: (number)->
+    img_path = "assets/map_icons/number_#{number}.png"
+    { url: img_path }
+
+  _mapBounds: ()->
+    @__mapBounds ?= new google.maps.LatLngBounds

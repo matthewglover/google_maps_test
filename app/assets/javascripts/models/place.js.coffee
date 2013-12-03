@@ -10,3 +10,6 @@ class GoogleMaps.Models.Place extends Backbone.Model
     @set('show', !@get('show'))
     @trigger('toggle_show')
 
+  getNumericRef: ->
+    2
+

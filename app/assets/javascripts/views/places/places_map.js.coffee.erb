@@ -1,6 +1,7 @@
 class GoogleMaps.Views.PlacesMap extends Backbone.View
 
-  initialize: ->
+  initialize: (options)->
+    @vent = options.vent
     @listenTo(@collection, 'sync', @_addViews)
     @listenTo(@collection, 'setLocation', @_setMapView)
 
@@ -9,7 +10,11 @@ class GoogleMaps.Views.PlacesMap extends Backbone.View
 
   _addView: (model)=>
     unless _.findWhere(@_views(), model: model)
-      view = new GoogleMaps.Views.MapPlace(model: model, map: @map)
+      view = new GoogleMaps.Views.MapPlace(
+        model: model
+        map: @map
+        list_pos: @_views().length+1
+      )
       @_views().push(view)
 
   _setMapView: (lat, lng)->
@@ -17,7 +22,7 @@ class GoogleMaps.Views.PlacesMap extends Backbone.View
     if @map?
       @map.setView(lat, lng)
     else
-      @map = new GoogleMaps.Custom.Map(lat, lng)
+      @map = new GoogleMaps.Custom.Map(lat, lng, vent: @vent)
 
   _killViews: ->
     @_killView _.first(@_views()) while @_views().length > 0

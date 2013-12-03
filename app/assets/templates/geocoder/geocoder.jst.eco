@@ -1,0 +1,7 @@
+<form id="new_addr">
+  <input type="text" name="new_address" id="new_address" value="31 Portland Street, Leamington Spa" />
+  <input type="submit" value="go" />
+</form>
+
+<ul id="geocodes">
+</ul>

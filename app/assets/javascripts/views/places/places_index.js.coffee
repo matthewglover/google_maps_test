@@ -6,7 +6,8 @@ class GoogleMaps.Views.PlacesIndex extends Backbone.View
     'click #more': 'loadMore'
     'click #check_total': 'checkTotal'
 
-  initialize: ->
+  initialize: (options)->
+    @vent = options.vent
     @render()
     # @_addGecoderView()
     @listenTo(@collection, 'sync', @_addViews)

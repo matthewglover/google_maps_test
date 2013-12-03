@@ -1,0 +1,3 @@
+Latitude: <%= @geocode.get('latitude') %> Longitude: <%= @geocode.get('longitude') %>
+
+<button class="go">go</button>

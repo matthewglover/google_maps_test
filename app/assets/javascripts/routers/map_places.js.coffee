@@ -5,22 +5,31 @@ class GoogleMaps.Routers.MapPlaces extends Backbone.Router
   initialize: ->
 
   index: ->
+    @_getCurrentLocation()
     @_createPlacesCollection()
     @_createPlacesIndexView()
     @_createPlacesMapView()
-    @_getCurrentLocation()
+    @_createGeocoderCollection()
+    @_createGeocoderView()
+
+  _getCurrentLocation: ->
+    new GoogleMaps.Custom.CurrentLocation (vent: GoogleMaps.Vent)
 
   _createPlacesCollection: ->
-    @places_collection = new GoogleMaps.Collections.Places
+    @places_collection = new GoogleMaps.Collections.Places (vent: GoogleMaps.Vent)
     @listenTo GoogleMaps.Vent,  'CurrentLocation:found', (lat, lng) ->
       @places_collection.setLocation(lat, lng)
 
   _createPlacesIndexView: ->
-    @places_view = new GoogleMaps.Views.PlacesIndex collection: @places_collection
-    $('#list').html @places_view.el
+    @places_view = new GoogleMaps.Views.PlacesIndex (collection: @places_collection, vent: GoogleMaps.Vent)
+    $('#list').html (@places_view.el)
 
   _createPlacesMapView: ->
-    @places_map = new GoogleMaps.Views.PlacesMap collection: @places_collection
+    @places_map = new GoogleMaps.Views.PlacesMap (collection: @places_collection, vent: GoogleMaps.Vent)
 
-  _getCurrentLocation: ->
-    new GoogleMaps.Custom.CurrentLocation
+  _createGeocoderCollection: ->
+    @geocoder_collection = new GoogleMaps.Collections.Geocoder(vent: GoogleMaps.Vent)
+
+  _createGeocoderView: ->
+    @geocoder_view = new GoogleMaps.Views.Geocoder(collection: @geocoder_collection, vent: GoogleMaps.Vent)
+    $('#geocoder').html (@geocoder_view.render().el)

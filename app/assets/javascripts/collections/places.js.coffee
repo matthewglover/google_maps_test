@@ -3,8 +3,11 @@ class GoogleMaps.Collections.Places extends Backbone.Collection
   model: GoogleMaps.Models.Place
   url: '/api/search'
 
-  initialize: ->
-    @listenTo(GoogleMaps.Vent, 'Map:home_marker:dragend', @setLocation)
+  initialize: (options)->
+    @vent = options.vent
+    @listenTo(@vent, 'Map:home_marker:dragend', @setLocation)
+    @listenTo(@vent, 'Geocoder:geocode:setLocation', @setLocation)
+    @listenTo(@, 'add', @_afterModelAdded)
 
   setLocation: (latitude, longitude)->
     @latitude = latitude
@@ -21,16 +24,19 @@ class GoogleMaps.Collections.Places extends Backbone.Collection
   _fetchData: ()->
     @fetch(
       remove: false
-      success: @onFetched
-      error: @onError
+      success: @_onFetched
+      error: @_onError
       data:
         latitude: @latitude
         longitude: @longitude
         page: @page
       )
 
-  onFetched: (collection, response, options)=>
+  _onFetched: (collection, response, options)->
     # console.log('data fetched..')
 
-  onError: (collection, response, options)=>
+  _onError: (collection, response, options)->
     # console.log('data error')
+
+  _afterModelAdded: (model) ->
+    model.vent = @vent

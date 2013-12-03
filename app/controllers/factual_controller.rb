@@ -5,7 +5,13 @@ class FactualController < ApplicationController
     page = params['page'] || 1
     diameter = 750
     @factual = FactualApi.new
-    @factual.getPlacesNear(search: 'restaurant', latitude: latitude, longitude: longitude, page: page, diameter: diameter)
+    @factual.search(
+      search: 'restaurant',
+      latitude: latitude,
+      longitude: longitude,
+      page: page,
+      diameter: diameter
+    )
 
     respond_to do |format|
       format.json { render json: @factual.rows }

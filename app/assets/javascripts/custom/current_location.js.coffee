@@ -1,7 +1,8 @@
 class GoogleMaps.Custom.CurrentLocation
   _.extend @prototype, Backbone.Events
 
-  constructor: ->
+  constructor: (options)->
+    @vent = options.vent
     navigator.geolocation.getCurrentPosition @success, @error, @options
 
   options:
@@ -10,7 +11,7 @@ class GoogleMaps.Custom.CurrentLocation
     maximumAge: 3000
 
   success: (pos)=>
-    GoogleMaps.Vent.trigger 'CurrentLocation:found', pos.coords.latitude, pos.coords.longitude
+    @vent.trigger 'CurrentLocation:found', pos.coords.latitude, pos.coords.longitude
 
   error: (err)=>
     console.warn "ERROR(#{err.code}) #{err.message}"
