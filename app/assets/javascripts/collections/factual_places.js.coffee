@@ -1,7 +1,7 @@
-class GoogleMaps.Collections.Places extends Backbone.Collection
+class GoogleMaps.Collections.FactualPlaces extends Backbone.Collection
 
-  model: GoogleMaps.Models.Place
-  url: '/api/search'
+  model: GoogleMaps.Models.FactualPlace
+  url: '/api/factual/search'
 
   initialize: (options)->
     @vent = options.vent

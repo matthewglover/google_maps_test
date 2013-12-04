@@ -1,4 +1,4 @@
-class GoogleMaps.Views.PlacesMap extends Backbone.View
+class GoogleMaps.Views.FactualPlacesMap extends Backbone.View
 
   initialize: (options)->
     @vent = options.vent
@@ -11,7 +11,7 @@ class GoogleMaps.Views.PlacesMap extends Backbone.View
 
   _addView: (model)=>
     unless _.findWhere(@_views(), model: model)
-      view = new GoogleMaps.Views.MapPlace(
+      view = new GoogleMaps.Views.MapFactualPlace(
         model: model
         map: @map
         list_pos: @_views().length+1

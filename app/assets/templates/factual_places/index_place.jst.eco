@@ -5,3 +5,4 @@ Name: <%= @place.get('name') %>
 <% else: %>
   <button class="showHide">show</button>
 <% end %>
+<button class="save">save</save>

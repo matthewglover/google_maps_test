@@ -1,6 +1,6 @@
-class GoogleMaps.Views.PlacesIndex extends Backbone.View
+class GoogleMaps.Views.FactualPlacesIndex extends Backbone.View
 
-  template: JST['places/index']
+  template: JST['factual_places/index']
 
   events:
     'click #more': 'loadMore'
@@ -18,21 +18,12 @@ class GoogleMaps.Views.PlacesIndex extends Backbone.View
     @$el.html(@template())
     @
 
-  # _addGecoderView: ->
-  #   geocoder = new BackboneLeaflet.Collections.Geocoder()
-  #   view = new BackboneLeaflet.Views.Geocoder(collection: geocoder, parent_view: @)
-  #   @listenTo(view, 'changeLocation',@_changeLocation)
-  #   @$('#Geocoder').append(view.render().el)
-
-  # setLocation: (latitude, longitude)->
-  #   @collection.setLocation(latitude,longitude)
-
   _addViews: =>
     @collection.each(@_addView)
 
   _addView: (model)=>
     unless _.findWhere(@_views(), model: model)
-      view = new GoogleMaps.Views.IndexPlace(model: model)
+      view = new GoogleMaps.Views.IndexFactualPlace(model: model)
       @_views().push(view)
       @$('#PlaceList').append(view.render().el)
 

@@ -1,4 +1,4 @@
-class GoogleMaps.Views.MapPlace extends Backbone.View
+class GoogleMaps.Views.MapFactualPlace extends Backbone.View
 
   initialize: (options)->
     @list_pos = options.list_pos

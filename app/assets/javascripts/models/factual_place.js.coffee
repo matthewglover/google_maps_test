@@ -1,4 +1,4 @@
-class GoogleMaps.Models.Place extends Backbone.Model
+class GoogleMaps.Models.FactualPlace extends Backbone.Model
 
   # defaults:
   #   show: false
@@ -9,7 +9,4 @@ class GoogleMaps.Models.Place extends Backbone.Model
   toggleShow: ->
     @set('show', !@get('show'))
     @trigger('toggle_show')
-
-  getNumericRef: ->
-    2
 
