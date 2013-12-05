@@ -13,9 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20131204160046) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "places", force: true do |t|
     t.string   "factual_id"
-    t.string   "name"
+    t.string   "name",       null: false
     t.string   "telephone"
     t.string   "address"
     t.string   "postcode"
@@ -27,8 +30,8 @@ ActiveRecord::Schema.define(version: 20131204160046) do
     t.datetime "updated_at"
   end
 
-  add_index "places", ["factual_id"], name: "index_places_on_factual_id"
-  add_index "places", ["lat", "lng"], name: "index_places_on_lat_and_lng"
-  add_index "places", ["name"], name: "index_places_on_name"
+  add_index "places", ["factual_id"], name: "index_places_on_factual_id", unique: true, using: :btree
+  add_index "places", ["lat", "lng"], name: "index_places_on_lat_and_lng", using: :btree
+  add_index "places", ["name"], name: "index_places_on_name", using: :btree
 
 end

@@ -2,11 +2,11 @@ class PlacesController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Place.all
+    respond_with(Place.all)
   end
 
   def show
-    respond_with Place.find(params[:id])
+    respond_with(Place.find(params[:id]))
   end
 
   def create
@@ -14,16 +14,16 @@ class PlacesController < ApplicationController
     if place.save
       respond_with place
     else
-      respond_with ({ errors: place.errors.full_messages })
+      respond_with({ errors: place.errors.full_messages })
     end
   end
 
   def update
-    respond_with Place.update(place_params)
+    respond_with(Place.update(place_params))
   end
 
   def destroy
-    respond_with Place.destroy(params[:id])
+    respond_with(Place.destroy(params[:id]))
   end
 
   private
