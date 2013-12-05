@@ -11,6 +11,7 @@ class Place < ActiveRecord::Base
   validates :lng, presence: true, if: :lat?
   validates :lat, presence: true, if: :lng?
   validates :address, presence: true, unless: :location?
+  validates :factual_id, uniqueness: true, allow_nil: true
 
   ########################################
   # Private methods

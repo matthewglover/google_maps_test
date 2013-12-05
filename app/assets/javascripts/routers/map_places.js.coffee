@@ -3,6 +3,7 @@ class GoogleMaps.Routers.MapPlaces extends Backbone.Router
     '': 'index'
 
   initialize: ->
+    super()
 
   index: ->
     @_getCurrentLocation()
@@ -11,6 +12,8 @@ class GoogleMaps.Routers.MapPlaces extends Backbone.Router
     @_createFactualPlacesMapView()
     @_createGeocoderCollection()
     @_createGeocoderView()
+    @_createGSpotPlacesCollection()
+    @_createGSpotPlacesView()
 
   _getCurrentLocation: ->
     new GoogleMaps.Custom.CurrentLocation (vent: GoogleMaps.Vent)
@@ -21,7 +24,7 @@ class GoogleMaps.Routers.MapPlaces extends Backbone.Router
       @factual_places_collection.setLocation(lat, lng)
 
   _createFactualPlacesIndexView: ->
-    @factual_places_view = new GoogleMaps.Views.FactualPlacesIndex (collection: @factual_places_collection, vent: GoogleMaps.Vent)
+    @factual_places_view = new GoogleMaps.Views.FactualPlacesIndex(collection: @factual_places_collection, vent: GoogleMaps.Vent)
     $('#list').html (@factual_places_view.el)
 
   _createFactualPlacesMapView: ->
@@ -33,3 +36,11 @@ class GoogleMaps.Routers.MapPlaces extends Backbone.Router
   _createGeocoderView: ->
     @geocoder_view = new GoogleMaps.Views.Geocoder(collection: @geocoder_collection, vent: GoogleMaps.Vent)
     $('#geocoder').html (@geocoder_view.render().el)
+
+  _createGSpotPlacesCollection: ->
+    @gspot_places_collection = new GoogleMaps.Collections.GSpotPlaces().init(vent: GoogleMaps.Vent)
+    @gspot_places_collection.fetch()
+
+  _createGSpotPlacesView: ->
+    @gspot_places_view = new GoogleMaps.Views.GSpotPlacesIndex(collection: @gspot_places_collection, vent: GoogleMaps.Vent)
+    $('#spots').html (@gspot_places_view.render().el)

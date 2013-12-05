@@ -7,7 +7,8 @@ class GoogleMaps.Views.IndexFactualPlace extends Backbone.View
     'click .showHide': 'toggleShow'
     'click .save': 'spotSave'
 
-  initialize: ->
+  initialize: (options)->
+    @vent = options.vent
 
   render: ->
     @$el.html(@template(place: @model))
@@ -20,5 +21,5 @@ class GoogleMaps.Views.IndexFactualPlace extends Backbone.View
     @render()
 
   spotSave: ->
-    console.log "Saving spot #{@model.attributes}"
-    console.log "#{key} - #{value}" for key, value of @model.attributes
+    console.log "Saving place: #{@model.get('name')}"
+    @vent.trigger("FactualPlace:spotSave", @model)

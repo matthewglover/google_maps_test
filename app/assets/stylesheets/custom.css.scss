@@ -20,10 +20,13 @@ body {
   width: 50%;
 }
 
-#list {
+#panel {
   float: left;
   width: 400px;
   border: 1px solid green;
+  #spots {
+    border: 1px dotted red;
+  }
 }
 
 .show {

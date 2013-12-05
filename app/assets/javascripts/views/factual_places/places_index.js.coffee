@@ -9,10 +9,8 @@ class GoogleMaps.Views.FactualPlacesIndex extends Backbone.View
   initialize: (options)->
     @vent = options.vent
     @render()
-    # @_addGecoderView()
     @listenTo(@collection, 'sync', @_addViews)
     @listenTo(@collection, 'setLocation', @_killViews)
-    # @listenTo(BackboneLeaflet.Events, 'homeDragged', @setLocation)
 
   render: ->
     @$el.html(@template())
@@ -23,7 +21,7 @@ class GoogleMaps.Views.FactualPlacesIndex extends Backbone.View
 
   _addView: (model)=>
     unless _.findWhere(@_views(), model: model)
-      view = new GoogleMaps.Views.IndexFactualPlace(model: model)
+      view = new GoogleMaps.Views.IndexFactualPlace(model: model, vent: @vent)
       @_views().push(view)
       @$('#PlaceList').append(view.render().el)
 
