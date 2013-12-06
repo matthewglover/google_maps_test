@@ -16,6 +16,8 @@ Place.find_or_create_by(factual_id: "1a19fc48-25dc-4dde-8abe-fd4c97bfdec2") do |
   place.lng = -0.062188
 end
 
+
+
 Place.find_or_create_by(factual_id: "1b6227a6-5cbb-4167-82a5-70a5632c3b07") do |place|
   place.name = "Nando's"
   place.address = "366 Bethnal Green Rd"

@@ -23,4 +23,12 @@ class GoogleMaps.Collections.GSpotPlaces extends Backbone.Collection
       lat: model.get('latitude')
       lng: model.get('longitude')
       telephone: model.get('tel')
+    options.error = @onError
     super(attributes, options)
+
+  onError: (model, xhr, options)->
+    status = xhr.status
+    statusText = xhr.statusText
+    errors = xhr.responseJSON.errors
+    console.log "Error - #{status} - #{statusText}"
+    console.log "Factual id #{errors.factual_id.join(', ')}" if errors.factual_id?

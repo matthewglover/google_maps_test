@@ -1,4 +1,4 @@
-class CreatePlacesDropSpaces < ActiveRecord::Migration
+class CreatePlaces< ActiveRecord::Migration
   def change
     create_table :places do |t|
       t.string :factual_id, null: true

@@ -10,12 +10,13 @@ class PlacesController < ApplicationController
   end
 
   def create
-    place = Place.new(place_params)
-    if place.save
-      respond_with place
-    else
-      respond_with({ errors: place.errors.full_messages })
-    end
+    respond_with(Place.create(place_params))
+    # place = Place.new(place_params)
+    # if place.save
+    #   respond_with place
+    # else
+    #   respond_with({status: 400, errors: place.errors.full_messages, location: nil})
+    # end
   end
 
   def update

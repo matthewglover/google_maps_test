@@ -2,7 +2,7 @@ class Place < ActiveRecord::Base
   ########################################
   # Associations
   ########################################
-
+  has_many :spots
 
   ########################################
   # Validations
