@@ -19,9 +19,9 @@ class PlacesController < ApplicationController
       p.country = place_params[:country]
       p.lat = place_params[:lat]
       p.lng = place_params[:lng]
-      place_params[:spots_attributes].each do |s|
-        p.spots.build(s)
-      end
+    end
+    place_params[:spots_attributes].each do |s|
+      place.spots.build(s)
     end
     place.save
     respond_with(place)
