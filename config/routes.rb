@@ -6,6 +6,7 @@ GoogleMaps::Application.routes.draw do
       get "search", to: 'factual#search'
     end
     resources :places
+    resources :spots
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

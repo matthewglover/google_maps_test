@@ -14,15 +14,17 @@ class GoogleMaps.Collections.GSpotPlaces extends Backbone.Collection
   create: (model, options={})->
     console.log('saving...')
     attributes =
-      factual_id: model.get('factual_id')
-      name: model.get('name')
-      address: model.get('address')
-      region: model.get('region')
-      country: model.get('country')
-      postcode: model.get('postcode')
-      lat: model.get('latitude')
-      lng: model.get('longitude')
-      telephone: model.get('tel')
+      place:
+        factual_id: model.get('factual_id')
+        name: model.get('name')
+        address: model.get('address')
+        region: model.get('region')
+        country: model.get('country')
+        postcode: model.get('postcode')
+        lat: model.get('latitude')
+        lng: model.get('longitude')
+        telephone: model.get('tel')
+        spots_attributes: [ keywords: 'restaurant' ]
     options.error = @onError
     super(attributes, options)
 
@@ -31,4 +33,5 @@ class GoogleMaps.Collections.GSpotPlaces extends Backbone.Collection
     statusText = xhr.statusText
     errors = xhr.responseJSON.errors
     console.log "Error - #{status} - #{statusText}"
+    console.log errors
     console.log "Factual id #{errors.factual_id.join(', ')}" if errors.factual_id?

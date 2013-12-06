@@ -10,13 +10,21 @@ class PlacesController < ApplicationController
   end
 
   def create
-    respond_with(Place.create(place_params))
-    # place = Place.new(place_params)
-    # if place.save
-    #   respond_with place
-    # else
-    #   respond_with({status: 400, errors: place.errors.full_messages, location: nil})
-    # end
+    place = Place.find_or_initialize_by(factual_id: place_params[:factual_id]) do |p|
+      p.name = place_params[:name]
+      p.telephone = place_params[:telephone]
+      p.address = place_params[:address]
+      p.postcode = place_params[:postcode]
+      p.region = place_params[:region]
+      p.country = place_params[:country]
+      p.lat = place_params[:lat]
+      p.lng = place_params[:lng]
+      place_params[:spots_attributes].each do |s|
+        p.spots.build(s)
+      end
+    end
+    place.save
+    respond_with(place)
   end
 
   def update
@@ -30,7 +38,9 @@ class PlacesController < ApplicationController
   private
 
     def place_params
-      params.permit(
+      params.require(
+        :place
+      ).permit(
         :name,
         :factual_id,
         :telephone,
@@ -39,7 +49,8 @@ class PlacesController < ApplicationController
         :region,
         :country,
         :lat,
-        :lng
+        :lng,
+        spots_attributes: [:keywords]
       )
     end
 end

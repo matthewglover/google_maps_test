@@ -3,6 +3,7 @@ class Place < ActiveRecord::Base
   # Associations
   ########################################
   has_many :spots
+  accepts_nested_attributes_for :spots
 
   ########################################
   # Validations
