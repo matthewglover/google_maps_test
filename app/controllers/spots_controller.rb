@@ -2,7 +2,7 @@ class SpotsController < ApplicationController
   respond_to :json
 
   def index
-    spots = Spot.all_with_place
+    spots = Spot.all_spots
     respond_with(spots, methods: :place)
   end
 

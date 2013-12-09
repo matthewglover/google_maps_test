@@ -1,12 +1,19 @@
 class PlacesController < ApplicationController
+
+  ########################################
+  # Config
+  ########################################
   respond_to :json
 
+  ########################################
+  # Actions
+  ########################################
   def index
-    respond_with(Place.all)
+    respond_with(Place.all_spots.where("spots.keywords" => "restaurant"))
   end
 
   def show
-    respond_with(Place.find(params[:id]))
+    # respond_with(Place.find(params[:id]))
   end
 
   def create
@@ -28,29 +35,32 @@ class PlacesController < ApplicationController
   end
 
   def update
-    respond_with(Place.update(place_params))
+    # respond_with(Place.update(place_params))
   end
 
   def destroy
-    respond_with(Place.destroy(params[:id]))
+    # respond_with(Place.destroy(params[:id]))
   end
 
+  ########################################
+  # Private methods
+  ########################################
   private
 
-    def place_params
-      params.require(
-        :place
-      ).permit(
-        :name,
-        :factual_id,
-        :telephone,
-        :address,
-        :postcode,
-        :region,
-        :country,
-        :lat,
-        :lng,
-        spots_attributes: [:keywords]
-      )
-    end
+  def place_params
+    params.require(
+      :place
+    ).permit(
+      :name,
+      :factual_id,
+      :telephone,
+      :address,
+      :postcode,
+      :region,
+      :country,
+      :lat,
+      :lng,
+      spots_attributes: [:keywords]
+    )
+  end
 end

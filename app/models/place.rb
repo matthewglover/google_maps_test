@@ -15,6 +15,18 @@ class Place < ActiveRecord::Base
   validates :factual_id, uniqueness: true, allow_nil: true
 
   ########################################
+  # Scopes
+  ########################################
+  scope :restaurants, ->{  where("spots.keywords" => "restaurant") }
+
+  ########################################
+  # Class methods
+  ########################################
+  def self.all_spots
+    select('places.id AS place_id', 'spots.id AS spot_id', 'places.*', 'spots.*').joins(:spots)
+  end
+
+  ########################################
   # Private methods
   ########################################
   private
